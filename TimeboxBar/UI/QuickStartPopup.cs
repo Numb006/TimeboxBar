@@ -56,20 +56,5 @@ namespace TimeboxBar.UI
             if (closeOnDeactivate)
                 Deactivate += (s, e) => { if (DialogResult == DialogResult.None) Close(); };
         }
-
-        public void PositionAtCursor()
-        {
-            var pos    = Cursor.Position;
-            var screen = Screen.FromPoint(pos).WorkingArea;
-
-            int x = pos.X - Width / 2;
-            int y = pos.Y - Height - 8;
-
-            if (x + Width > screen.Right) x = screen.Right - Width;
-            if (x         < screen.Left)  x = screen.Left;
-            if (y         < screen.Top)   y = pos.Y + 8;
-
-            Location = new Point(x, y);
-        }
     }
 }

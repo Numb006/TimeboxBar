@@ -92,6 +92,7 @@ namespace TimeboxBar.UI
                 var cp = base.CreateParams;
                 cp.ExStyle |= 0x00080000; // WS_EX_LAYERED    — Alpha + ColorKey
                 cp.ExStyle |= 0x00000020; // WS_EX_TRANSPARENT — Click-Through
+                cp.ExStyle |= 0x00000080; // WS_EX_TOOLWINDOW  — kein Taskbar-Eintrag + bleibt auf allen virtuellen Desktops
                 return cp;
             }
         }
@@ -420,8 +421,6 @@ namespace TimeboxBar.UI
         {
             using (var popup = new QuickStartPopup(_config.QuickStart1, _config.QuickStart2, closeOnDeactivate))
             {
-                if (closeOnDeactivate)
-                    popup.PositionAtCursor();
                 if (popup.ShowDialog(this) == DialogResult.OK)
                 {
                     if (popup.SelectedMinutes == -1)
