@@ -53,7 +53,15 @@ namespace TimeboxBar.UI
 
             Controls.AddRange(new Control[] { btn1, btn2, btnCustom });
 
-            Deactivate += (s, e) => { if (DialogResult == DialogResult.None) Close(); };
+            // Deactivate erst nach kurzem Delay aktivieren — verhindert sofortiges
+            // Schließen wenn Windows beim Start kurz woanders fokussiert
+            var closeTimer = new Timer { Interval = 300 };
+            closeTimer.Tick += (s, e) =>
+            {
+                closeTimer.Stop();
+                Deactivate += (s2, e2) => { if (DialogResult == DialogResult.None) Close(); };
+            };
+            Shown += (s, e) => closeTimer.Start();
         }
 
         public void PositionAtCursor()

@@ -59,8 +59,11 @@ jobs:
       - name: Build Installer (Inno Setup)
         run: |
           $version = "${{ github.ref_name }}".TrimStart('v')
+          $iss = Get-Content installer\TimeboxBar.iss -Raw
+          $iss = $iss -replace '#define MyAppVersion "[^"]*"', "#define MyAppVersion `"$version`""
+          Set-Content installer\TimeboxBar.iss $iss -Encoding UTF8
           $iscc = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
-          & $iscc "/DMyAppVersion=$version" installer\TimeboxBar.iss
+          & $iscc installer\TimeboxBar.iss
         shell: pwsh
 
       - name: Create GitHub Release
