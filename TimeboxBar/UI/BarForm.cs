@@ -135,6 +135,13 @@ namespace TimeboxBar.UI
 
             if (!hotkeyOk)
                 _trayIcon.ShowBalloonTip(4000, "TimeboxBar", S.HotkeyConflict, ToolTipIcon.Warning);
+
+            if (_config.FirstRun)
+            {
+                _config.FirstRun = false;
+                _config.Save();
+                BeginInvoke(new System.Action(ShowQuickStartPopup));
+            }
         }
 
         protected override void OnFormClosed(FormClosedEventArgs e)
@@ -176,8 +183,16 @@ namespace TimeboxBar.UI
 
             if (m.Msg == WM_HOTKEY)
             {
-                Logger.Log("WM_HOTKEY received → TogglePause");
-                _timer.TogglePause();
+                if (_timer.State == TimerState.Idle)
+                {
+                    Logger.Log("WM_HOTKEY received → idle, showing QuickStartPopup");
+                    ShowQuickStartPopup();
+                }
+                else
+                {
+                    Logger.Log("WM_HOTKEY received → TogglePause");
+                    _timer.TogglePause();
+                }
             }
             else if (m.Msg == Program.WM_SHOW_INSTANCE)
             {
@@ -403,6 +418,21 @@ namespace TimeboxBar.UI
             {
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                     StartTimer(dlg.Minutes);
+            }
+        }
+
+        private void ShowQuickStartPopup()
+        {
+            using (var popup = new QuickStartPopup(_config.QuickStart1, _config.QuickStart2))
+            {
+                popup.ShowAtCursor();
+                if (popup.ShowDialog(this) == DialogResult.OK)
+                {
+                    if (popup.SelectedMinutes == -1)
+                        ShowCustomTimeDialog();
+                    else
+                        StartTimer(popup.SelectedMinutes);
+                }
             }
         }
 

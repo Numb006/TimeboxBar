@@ -49,6 +49,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\BarForm.cs" />
     <Compile Include="UI\CustomTimeDialog.cs" />
+    <Compile Include="UI\QuickStartPopup.cs" />
     <Compile Include="UI\SettingsForm.cs" />
   </ItemGroup>
   <ItemGroup>
