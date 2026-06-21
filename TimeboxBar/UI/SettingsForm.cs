@@ -58,6 +58,7 @@ namespace TimeboxBar.UI
                 Location = new Point(cx, y), Width = 60, Font = ctrlFont
             };
             Controls.Add(_heightSpinner);
+            AddLabel($"({AppConfig.MinBarHeight}–{AppConfig.MaxBarHeight} px)", cx + 66, y + 3, lblFont);
             y += step;
 
             AddLabel(S.LabelPosition, lx, y + 3, lblFont);
