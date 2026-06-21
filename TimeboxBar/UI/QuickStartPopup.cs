@@ -16,7 +16,7 @@ namespace TimeboxBar.UI
             ShowInTaskbar   = false;
             TopMost         = true;
             Text            = "TimeboxBar";
-            StartPosition   = FormStartPosition.Manual;
+            StartPosition   = FormStartPosition.CenterScreen;
             ClientSize      = new Size(200, 110);
 
             var font = new Font("Segoe UI", 10f);
