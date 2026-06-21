@@ -56,3 +56,27 @@ Filename: "{app}\{#MyAppExeName}"; Description: "{#MyAppName} jetzt starten"; Fl
 [UninstallRun]
 ; App beenden vor Deinstallation
 Filename: "taskkill.exe"; Parameters: "/f /im {#MyAppExeName}"; Flags: runhidden; RunOnceId: "KillApp"
+
+[Code]
+procedure CurStepChanged(CurStep: TSetupStep);
+var
+  ConfigDir, ConfigPath, Lang: String;
+begin
+  if CurStep = ssPostInstall then
+  begin
+    ConfigDir := ExpandConstant('{userappdata}\TimeboxBar');
+    if not DirExists(ConfigDir) then
+      CreateDir(ConfigDir);
+    ConfigPath := ConfigDir + '\config.json';
+    if not FileExists(ConfigPath) then
+    begin
+      if ActiveLanguage = 'german' then
+        Lang := 'de'
+      else
+        Lang := 'en';
+      SaveStringToFile(ConfigPath,
+        '{"Language":"' + Lang + '"}',
+        False);
+    end;
+  end;
+end;

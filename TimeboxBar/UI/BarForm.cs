@@ -136,7 +136,7 @@ namespace TimeboxBar.UI
             if (!hotkeyOk)
                 _trayIcon.ShowBalloonTip(4000, "TimeboxBar", S.HotkeyConflict, ToolTipIcon.Warning);
 
-            BeginInvoke(new System.Action(ShowQuickStartPopup));
+            BeginInvoke(new System.Action(() => ShowQuickStartPopup()));
         }
 
         protected override void OnFormClosed(FormClosedEventArgs e)
@@ -181,7 +181,7 @@ namespace TimeboxBar.UI
                 if (_timer.State == TimerState.Idle)
                 {
                     Logger.Log("WM_HOTKEY received → idle, showing QuickStartPopup");
-                    ShowQuickStartPopup();
+                    ShowQuickStartPopup(closeOnDeactivate: true);
                 }
                 else
                 {
@@ -416,9 +416,9 @@ namespace TimeboxBar.UI
             }
         }
 
-        private void ShowQuickStartPopup()
+        private void ShowQuickStartPopup(bool closeOnDeactivate = false)
         {
-            using (var popup = new QuickStartPopup(_config.QuickStart1, _config.QuickStart2))
+            using (var popup = new QuickStartPopup(_config.QuickStart1, _config.QuickStart2, closeOnDeactivate))
             {
                 popup.PositionAtCursor();
                 if (popup.ShowDialog(this) == DialogResult.OK)
