@@ -52,4 +52,10 @@
   <data name="CustomTimeTitle"   xml:space="preserve"><value>Timebox duration</value></data>
   <data name="LabelMinutes"      xml:space="preserve"><value>Minutes:</value></data>
   <data name="ButtonStart"       xml:space="preserve"><value>Start</value></data>
+
+  <!-- Language selector -->
+  <data name="LabelLanguage"     xml:space="preserve"><value>Language:</value></data>
+  <data name="LangAuto"          xml:space="preserve"><value>Auto (Windows)</value></data>
+  <data name="LangEnglish"       xml:space="preserve"><value>English</value></data>
+  <data name="LangGerman"        xml:space="preserve"><value>Deutsch</value></data>
 </root>

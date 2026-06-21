@@ -19,6 +19,7 @@ namespace TimeboxBar.UI
         private NumericUpDown _quick2Spinner;
         private TextBox       _hotkeyBox;
         private CheckBox      _soundCheck;
+        private ComboBox      _languageCombo;
 
         private uint _hotkeyModifier;
         private uint _hotkeyKey;
@@ -141,6 +142,18 @@ namespace TimeboxBar.UI
             Controls.Add(_soundCheck);
             y += 36;
 
+            AddLabel(S.LabelLanguage, lx, y + 3, lblFont);
+            _languageCombo = new ComboBox
+            {
+                DropDownStyle = ComboBoxStyle.DropDownList,
+                Location      = new Point(cx, y),
+                Width         = 120,
+                Font          = ctrlFont
+            };
+            _languageCombo.Items.AddRange(new object[] { S.LangAuto, S.LangEnglish, S.LangGerman });
+            Controls.Add(_languageCombo);
+            y += step;
+
             // OK / Abbrechen
             var btnOk = new Button
             {
@@ -183,6 +196,9 @@ namespace TimeboxBar.UI
             _quick2Spinner.Value   = Math.Max(1, Math.Min(240, _config.QuickStart2));
             _hotkeyBox.Text        = FormatHotkey(_hotkeyModifier, _hotkeyKey);
             _soundCheck.Checked    = _config.PlaySound;
+            _languageCombo.Text    = _config.Language == "en" ? S.LangEnglish
+                                   : _config.Language == "de" ? S.LangGerman
+                                   : S.LangAuto;
         }
 
         private void SaveValues()
@@ -195,6 +211,9 @@ namespace TimeboxBar.UI
             _config.HotkeyModifier = _hotkeyModifier;
             _config.HotkeyKey      = _hotkeyKey;
             _config.PlaySound      = _soundCheck.Checked;
+            _config.Language       = _languageCombo.Text == S.LangEnglish ? "en"
+                                   : _languageCombo.Text == S.LangGerman  ? "de"
+                                   : "auto";
         }
 
         private void OnHotkeyKeyDown(object sender, KeyEventArgs e)

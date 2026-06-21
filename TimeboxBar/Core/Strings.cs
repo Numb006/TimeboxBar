@@ -55,5 +55,11 @@ namespace TimeboxBar.Core
         public static string CustomTimeTitle       => Get("CustomTimeTitle");
         public static string LabelMinutes          => Get("LabelMinutes");
         public static string ButtonStart           => Get("ButtonStart");
+
+        // Language selector
+        public static string LabelLanguage         => Get("LabelLanguage");
+        public static string LangAuto              => Get("LangAuto");
+        public static string LangEnglish           => Get("LangEnglish");
+        public static string LangGerman            => Get("LangGerman");
     }
 }
