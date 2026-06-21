@@ -23,7 +23,6 @@ namespace TimeboxBar.Core
         [DataMember] public int    QuickStart2    { get; set; }
         [DataMember] public bool   PlaySound      { get; set; }
         [DataMember] public string Language       { get; set; } // "auto", "de", "en"
-        [DataMember] public bool   FirstRun       { get; set; }
 
         public bool IsBottom          => Position == "Bottom";
         public int  ClampedBarHeight  => Math.Max(MinBarHeight, Math.Min(MaxBarHeight, BarHeight));
@@ -46,7 +45,6 @@ namespace TimeboxBar.Core
             QuickStart2    = 45;
             PlaySound      = true;
             Language       = "auto";
-            FirstRun       = true;
         }
 
         private static string ConfigPath => Path.Combine(

@@ -16,6 +16,7 @@ DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 OutputDir=Output
 OutputBaseFilename=TimeboxBar-{#MyAppVersion}-Setup
+SetupIconFile=..\TimeboxBar\app.ico
 Compression=lzma2
 SolidCompression=yes
 WizardStyle=modern

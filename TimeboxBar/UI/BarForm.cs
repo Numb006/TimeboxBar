@@ -136,12 +136,7 @@ namespace TimeboxBar.UI
             if (!hotkeyOk)
                 _trayIcon.ShowBalloonTip(4000, "TimeboxBar", S.HotkeyConflict, ToolTipIcon.Warning);
 
-            if (_config.FirstRun)
-            {
-                _config.FirstRun = false;
-                _config.Save();
-                BeginInvoke(new System.Action(ShowQuickStartPopup));
-            }
+            BeginInvoke(new System.Action(ShowQuickStartPopup));
         }
 
         protected override void OnFormClosed(FormClosedEventArgs e)
