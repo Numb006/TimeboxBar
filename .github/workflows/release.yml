@@ -32,6 +32,7 @@ jobs:
 
       - name: Run Tests
         run: |
+          nuget install NUnit -Version 3.14.0 -OutputDirectory packages
           nuget install NUnit.ConsoleRunner -Version 3.16.3 -OutputDirectory packages
           msbuild TimeboxBar.Tests/TimeboxBar.Tests.csproj /p:Configuration=Release
           .\packages\NUnit.ConsoleRunner.3.16.3\tools\nunit3-console.exe `
