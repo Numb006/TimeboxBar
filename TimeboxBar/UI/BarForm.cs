@@ -39,8 +39,11 @@ namespace TimeboxBar.UI
 
         private ToolStripMenuItem _itemQuick1;
         private ToolStripMenuItem _itemQuick2;
+        private ToolStripMenuItem _itemCustomTime;
         private ToolStripMenuItem _itemPause;
         private ToolStripMenuItem _itemStop;
+        private ToolStripMenuItem _itemSettings;
+        private ToolStripMenuItem _itemExit;
 
         private Icon _cachedIcon;
 
@@ -345,8 +348,8 @@ namespace TimeboxBar.UI
             _itemQuick2 = new ToolStripMenuItem();
             _itemQuick2.Click += (s, e) => StartTimer(_config.QuickStart2);
 
-            var itemCustom = new ToolStripMenuItem(S.MenuCustomTime);
-            itemCustom.Click += (s, e) => ShowCustomTimeDialog();
+            _itemCustomTime = new ToolStripMenuItem(S.MenuCustomTime);
+            _itemCustomTime.Click += (s, e) => ShowCustomTimeDialog();
 
             _itemPause = new ToolStripMenuItem(S.MenuPause) { Enabled = false };
             _itemPause.Click += (s, e) => _timer.TogglePause();
@@ -358,21 +361,21 @@ namespace TimeboxBar.UI
                 _timer.Stop();
             };
 
-            var itemSettings = new ToolStripMenuItem(S.MenuSettings);
-            itemSettings.Click += (s, e) => ShowSettings();
+            _itemSettings = new ToolStripMenuItem(S.MenuSettings);
+            _itemSettings.Click += (s, e) => ShowSettings();
 
-            var itemExit = new ToolStripMenuItem(S.MenuExit);
-            itemExit.Click += (s, e) => { Logger.Log("Beenden clicked"); _realExit = true; Close(); };
+            _itemExit = new ToolStripMenuItem(S.MenuExit);
+            _itemExit.Click += (s, e) => { Logger.Log("Beenden clicked"); _realExit = true; Close(); };
 
             menu.Items.Add(_itemQuick1);
             menu.Items.Add(_itemQuick2);
-            menu.Items.Add(itemCustom);
+            menu.Items.Add(_itemCustomTime);
             menu.Items.Add(new ToolStripSeparator());
             menu.Items.Add(_itemPause);
             menu.Items.Add(_itemStop);
             menu.Items.Add(new ToolStripSeparator());
-            menu.Items.Add(itemSettings);
-            menu.Items.Add(itemExit);
+            menu.Items.Add(_itemSettings);
+            menu.Items.Add(_itemExit);
 
             _trayIcon.ContextMenuStrip = menu;
             UpdateTrayMenu();
@@ -406,8 +409,6 @@ namespace TimeboxBar.UI
         private void ShowSettings()
         {
             Logger.Log("ShowSettings");
-            // Hotkey abmelden damit der User die neue Kombination im Dialog tippen kann,
-            // ohne dass WM_HOTKEY das Drücken abfängt statt KeyDown an die TextBox zu schicken
             _hotkey.UnregisterAll();
             try
             {
@@ -415,22 +416,43 @@ namespace TimeboxBar.UI
                 {
                     if (dlg.ShowDialog(this) == DialogResult.OK)
                     {
+                        string prevLang = _config.Language;
                         _config.Save();
-                        ApplyConfig(); // registriert den Hotkey neu
+                        ApplyLanguage(prevLang);
+                        ApplyConfig();
                     }
                     else
                     {
-                        // Abgebrochen — alten Hotkey neu registrieren
                         _hotkey.Register(Handle, _config.HotkeyModifier, _config.HotkeyKey);
                     }
                 }
             }
             finally
             {
-                // Sicherheitsnetz falls Dialog mit Exception endet
                 if (!_hotkey.IsRegistered)
                     _hotkey.Register(Handle, _config.HotkeyModifier, _config.HotkeyKey);
             }
+        }
+
+        private void ApplyLanguage(string prevLang)
+        {
+            if (_config.Language == prevLang) return;
+
+            var culture = _config.Language == "auto"
+                ? System.Globalization.CultureInfo.InstalledUICulture
+                : new System.Globalization.CultureInfo(_config.Language);
+
+            System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
+            Logger.Log($"Language changed to: {culture.Name}");
+            RefreshMenuStrings();
+        }
+
+        private void RefreshMenuStrings()
+        {
+            _itemCustomTime.Text = S.MenuCustomTime;
+            _itemSettings.Text   = S.MenuSettings;
+            _itemExit.Text       = S.MenuExit;
+            UpdateTrayMenu();
         }
 
         private void UpdateTrayText()

@@ -212,16 +212,9 @@ namespace TimeboxBar.UI
             _config.HotkeyKey      = _hotkeyKey;
             _config.PlaySound      = _soundCheck.Checked;
 
-            var newLang = _languageCombo.Text == S.LangEnglish ? "en"
-                        : _languageCombo.Text == S.LangGerman  ? "de"
-                        : "auto";
-
-            bool langChanged = newLang != _config.Language;
-            _config.Language = newLang;
-
-            if (langChanged)
-                MessageBox.Show(S.LangRestartHint, "TimeboxBar",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            _config.Language = _languageCombo.Text == S.LangEnglish ? "en"
+                             : _languageCombo.Text == S.LangGerman  ? "de"
+                             : "auto";
         }
 
         private void OnHotkeyKeyDown(object sender, KeyEventArgs e)
