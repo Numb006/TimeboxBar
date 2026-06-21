@@ -166,7 +166,7 @@ namespace TimeboxBar.UI
 
             var btnCancel = new Button
             {
-                Text         = "Abbrechen",
+                Text         = S.ButtonCancel,
                 DialogResult = DialogResult.Cancel,
                 Location     = new Point(ClientSize.Width - 92, y),
                 Width        = 84
@@ -211,9 +211,17 @@ namespace TimeboxBar.UI
             _config.HotkeyModifier = _hotkeyModifier;
             _config.HotkeyKey      = _hotkeyKey;
             _config.PlaySound      = _soundCheck.Checked;
-            _config.Language       = _languageCombo.Text == S.LangEnglish ? "en"
-                                   : _languageCombo.Text == S.LangGerman  ? "de"
-                                   : "auto";
+
+            var newLang = _languageCombo.Text == S.LangEnglish ? "en"
+                        : _languageCombo.Text == S.LangGerman  ? "de"
+                        : "auto";
+
+            bool langChanged = newLang != _config.Language;
+            _config.Language = newLang;
+
+            if (langChanged)
+                MessageBox.Show(S.LangRestartHint, "TimeboxBar",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void OnHotkeyKeyDown(object sender, KeyEventArgs e)

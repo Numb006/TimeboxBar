@@ -58,4 +58,8 @@
   <data name="LangAuto"          xml:space="preserve"><value>Auto (Windows)</value></data>
   <data name="LangEnglish"       xml:space="preserve"><value>English</value></data>
   <data name="LangGerman"        xml:space="preserve"><value>Deutsch</value></data>
+  <data name="LangRestartHint"   xml:space="preserve"><value>Language change takes effect on next restart.</value></data>
+
+  <!-- Buttons -->
+  <data name="ButtonCancel"      xml:space="preserve"><value>Cancel</value></data>
 </root>

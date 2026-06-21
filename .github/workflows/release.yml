@@ -42,9 +42,10 @@ jobs:
       - name: Create ZIP
         run: |
           $version = "${{ github.ref_name }}"
-          Compress-Archive `
-            -Path TimeboxBar\bin\Release\TimeboxBar.exe `
-            -DestinationPath "TimeboxBar-$version.zip"
+          New-Item -ItemType Directory -Path "release_tmp" -Force | Out-Null
+          Copy-Item "TimeboxBar\bin\Release\TimeboxBar.exe" "release_tmp\"
+          Copy-Item "TimeboxBar\bin\Release\de" "release_tmp\de" -Recurse
+          Compress-Archive -Path "release_tmp\*" -DestinationPath "TimeboxBar-$version.zip"
         shell: pwsh
 
       - name: Install Inno Setup

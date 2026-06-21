@@ -61,5 +61,9 @@ namespace TimeboxBar.Core
         public static string LangAuto              => Get("LangAuto");
         public static string LangEnglish           => Get("LangEnglish");
         public static string LangGerman            => Get("LangGerman");
+        public static string LangRestartHint        => Get("LangRestartHint");
+
+        // Buttons
+        public static string ButtonCancel          => Get("ButtonCancel");
     }
 }

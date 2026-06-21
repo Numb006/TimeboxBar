@@ -36,6 +36,7 @@ Name: "startup"; Description: "TimeboxBar beim Windows-Start automatisch starten
 
 [Files]
 Source: "..\TimeboxBar\bin\Release\TimeboxBar.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\TimeboxBar\bin\Release\de\TimeboxBar.resources.dll"; DestDir: "{app}\de"; Flags: ignoreversion
 
 [Icons]
 Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"

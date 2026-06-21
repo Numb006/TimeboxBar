@@ -45,4 +45,7 @@
   <data name="LangAuto"          xml:space="preserve"><value>Automatisch (Windows)</value></data>
   <data name="LangEnglish"       xml:space="preserve"><value>English</value></data>
   <data name="LangGerman"        xml:space="preserve"><value>Deutsch</value></data>
+  <data name="LangRestartHint"   xml:space="preserve"><value>Sprachänderung wirkt erst nach Neustart.</value></data>
+
+  <data name="ButtonCancel"      xml:space="preserve"><value>Abbrechen</value></data>
 </root>
