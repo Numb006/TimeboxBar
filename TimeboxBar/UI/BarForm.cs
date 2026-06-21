@@ -410,13 +410,13 @@ namespace TimeboxBar.UI
         {
             Logger.Log("ShowSettings");
             _hotkey.UnregisterAll();
+            string prevLang = _config.Language;
             try
             {
                 using (var dlg = new SettingsForm(_config))
                 {
                     if (dlg.ShowDialog(this) == DialogResult.OK)
                     {
-                        string prevLang = _config.Language;
                         _config.Save();
                         ApplyLanguage(prevLang);
                         ApplyConfig();
