@@ -43,6 +43,7 @@
     <Compile Include="Core\AppConfig.cs" />
     <Compile Include="Core\Logger.cs" />
     <Compile Include="Core\HotkeyManager.cs" />
+    <Compile Include="Core\Strings.cs" />
     <Compile Include="Core\TimeboxTimer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -51,6 +52,8 @@
     <Compile Include="UI\SettingsForm.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx" />
+    <EmbeddedResource Include="Properties\Resources.de.resx" />
     <None Include="app.manifest" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

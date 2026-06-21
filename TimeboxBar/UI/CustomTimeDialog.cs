@@ -1,5 +1,6 @@
 using System.Drawing;
 using System.Windows.Forms;
+using TimeboxBar.Core;
 
 namespace TimeboxBar.UI
 {
@@ -11,7 +12,7 @@ namespace TimeboxBar.UI
 
         public CustomTimeDialog()
         {
-            Text            = "Timebox-Dauer";
+            Text            = Strings.CustomTimeTitle;
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox     = false;
             MinimizeBox     = false;
@@ -21,7 +22,7 @@ namespace TimeboxBar.UI
 
             var lbl = new Label
             {
-                Text     = "Minuten:",
+                Text     = Strings.LabelMinutes,
                 Location = new Point(16, 16),
                 AutoSize = true,
                 Font     = new System.Drawing.Font("Segoe UI", 10f)
@@ -39,7 +40,7 @@ namespace TimeboxBar.UI
 
             var btnOk = new Button
             {
-                Text         = "Starten",
+                Text         = Strings.ButtonStart,
                 DialogResult = DialogResult.OK,
                 Location     = new Point(60, 50),
                 Width        = 80
@@ -48,7 +49,7 @@ namespace TimeboxBar.UI
 
             var btnCancel = new Button
             {
-                Text         = "Abbrechen",
+                Text         = "Cancel",
                 DialogResult = DialogResult.Cancel,
                 Location     = new Point(148, 50),
                 Width        = 80

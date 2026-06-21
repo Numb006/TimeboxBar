@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
@@ -54,7 +55,18 @@ namespace TimeboxBar
                 {
                     Logger.Log("Loading AppConfig...");
                     var config = AppConfig.Load();
-                    Logger.Log($"Config loaded: Height={config.BarHeight}, Pos={config.Position}, Opacity={config.Opacity}");
+                    Logger.Log($"Config loaded: Height={config.BarHeight}, Pos={config.Position}, Opacity={config.Opacity}, Language={config.Language}");
+
+                    if (config.Language != "auto" && !string.IsNullOrEmpty(config.Language))
+                    {
+                        var culture = new CultureInfo(config.Language);
+                        Thread.CurrentThread.CurrentUICulture = culture;
+                        Logger.Log($"UI culture set to: {culture.Name}");
+                    }
+                    else
+                    {
+                        Logger.Log($"UI culture auto: {CultureInfo.CurrentUICulture.Name}");
+                    }
 
                     Logger.Log("Creating TimeboxTimer...");
                     var timer = new TimeboxTimer();

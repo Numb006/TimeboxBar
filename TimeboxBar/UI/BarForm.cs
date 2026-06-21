@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using TimeboxBar.Core;
+using S = TimeboxBar.Core.Strings;
 
 namespace TimeboxBar.UI
 {
@@ -130,9 +131,7 @@ namespace TimeboxBar.UI
             Logger.Log($"RegisterHotKey: modifier=0x{_config.HotkeyModifier:X}, key=0x{_config.HotkeyKey:X}, success={hotkeyOk}");
 
             if (!hotkeyOk)
-                _trayIcon.ShowBalloonTip(4000, "TimeboxBar",
-                    "Hotkey konnte nicht registriert werden — bitte anderen in Einstellungen wählen.",
-                    ToolTipIcon.Warning);
+                _trayIcon.ShowBalloonTip(4000, "TimeboxBar", S.HotkeyConflict, ToolTipIcon.Warning);
         }
 
         protected override void OnFormClosed(FormClosedEventArgs e)
@@ -156,7 +155,7 @@ namespace TimeboxBar.UI
             {
                 var rem    = _timer.Remaining;
                 var result = MessageBox.Show(
-                    $"Timer läuft noch ({rem:mm\\:ss} verbleibend). Wirklich beenden?",
+                    S.ExitConfirm($"{rem:mm\\:ss}"),
                     "TimeboxBar", MessageBoxButtons.YesNo, MessageBoxIcon.Question,
                     MessageBoxDefaultButton.Button2);
                 if (result == DialogResult.No) { e.Cancel = true; _realExit = false; return; }
@@ -180,7 +179,7 @@ namespace TimeboxBar.UI
             else if (m.Msg == Program.WM_SHOW_INSTANCE)
             {
                 Logger.Log("WM_SHOW_INSTANCE received");
-                _trayIcon.ShowBalloonTip(1500, "TimeboxBar", "Läuft bereits im Tray.", ToolTipIcon.Info);
+                _trayIcon.ShowBalloonTip(1500, "TimeboxBar", S.AlreadyRunning, ToolTipIcon.Info);
             }
             else if (m.Msg == WM_GETMINMAXINFO)
             {
@@ -242,8 +241,7 @@ namespace TimeboxBar.UI
             bool ok = _hotkey.Register(Handle, _config.HotkeyModifier, _config.HotkeyKey);
             Logger.Log($"ApplyConfig: RegisterHotKey ok={ok}");
             if (!ok)
-                _trayIcon.ShowBalloonTip(3000, "TimeboxBar",
-                    "Hotkey konnte nicht registriert werden.", ToolTipIcon.Warning);
+                _trayIcon.ShowBalloonTip(3000, "TimeboxBar", S.HotkeyConflictShort, ToolTipIcon.Warning);
         }
 
         private void OnDisplaySettingsChanged(object sender, EventArgs e)
@@ -259,7 +257,7 @@ namespace TimeboxBar.UI
             Logger.Log("OnTimerCompleted");
             if (_config.PlaySound)
                 try { SystemSounds.Exclamation.Play(); } catch { }
-            _trayIcon.ShowBalloonTip(5000, "TimeboxBar", "Zeit abgelaufen!", ToolTipIcon.Info);
+            _trayIcon.ShowBalloonTip(5000, "TimeboxBar", S.TimerCompleted, ToolTipIcon.Info);
             _blinking   = true;
             _blinkCount = 0;
             _uiTimer.Interval = 100;
@@ -347,23 +345,23 @@ namespace TimeboxBar.UI
             _itemQuick2 = new ToolStripMenuItem();
             _itemQuick2.Click += (s, e) => StartTimer(_config.QuickStart2);
 
-            var itemCustom = new ToolStripMenuItem("Eigene Zeit...");
+            var itemCustom = new ToolStripMenuItem(S.MenuCustomTime);
             itemCustom.Click += (s, e) => ShowCustomTimeDialog();
 
-            _itemPause = new ToolStripMenuItem("Pause") { Enabled = false };
+            _itemPause = new ToolStripMenuItem(S.MenuPause) { Enabled = false };
             _itemPause.Click += (s, e) => _timer.TogglePause();
 
-            _itemStop = new ToolStripMenuItem("Stopp") { Enabled = false };
+            _itemStop = new ToolStripMenuItem(S.MenuStop) { Enabled = false };
             _itemStop.Click += (s, e) =>
             {
                 Logger.Log("Stopp clicked");
                 _timer.Stop();
             };
 
-            var itemSettings = new ToolStripMenuItem("Einstellungen...");
+            var itemSettings = new ToolStripMenuItem(S.MenuSettings);
             itemSettings.Click += (s, e) => ShowSettings();
 
-            var itemExit = new ToolStripMenuItem("Beenden");
+            var itemExit = new ToolStripMenuItem(S.MenuExit);
             itemExit.Click += (s, e) => { Logger.Log("Beenden clicked"); _realExit = true; Close(); };
 
             menu.Items.Add(_itemQuick1);
@@ -387,7 +385,7 @@ namespace TimeboxBar.UI
             {
                 var rem    = _timer.Remaining;
                 var result = MessageBox.Show(
-                    $"Timer läuft noch ({rem:mm\\:ss}). Neu starten mit {minutes} Minuten?",
+                    S.TimerRunningRestart($"{rem:mm\\:ss}", minutes),
                     "TimeboxBar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result != DialogResult.Yes) return;
             }
@@ -444,11 +442,11 @@ namespace TimeboxBar.UI
             {
                 case TimerState.Running:
                     var rem = _timer.Remaining;
-                    text      = $"TimeboxBar — {rem:mm\\:ss} verbleibend";
+                    text      = S.TrayRunning($"{rem:mm\\:ss}");
                     iconColor = ProgressColor(_timer.Progress);
                     break;
                 case TimerState.Paused:
-                    text      = $"TimeboxBar — Pausiert ({_timer.Remaining:mm\\:ss})";
+                    text      = S.TrayPaused($"{_timer.Remaining:mm\\:ss}");
                     iconColor = Color.DimGray;
                     break;
                 default:
@@ -470,18 +468,18 @@ namespace TimeboxBar.UI
             bool running   = _timer.State != TimerState.Idle;
             _itemPause.Enabled = running;
             _itemStop.Enabled  = running;
-            _itemPause.Text    = _timer.State == TimerState.Paused ? "Fortsetzen" : "Pause";
+            _itemPause.Text    = _timer.State == TimerState.Paused ? S.MenuResume : S.MenuPause;
 
             if (running)
             {
                 var rem = _timer.Remaining;
-                _itemQuick1.Text = $"{_config.QuickStart1} Min (ersetzt {rem:mm\\:ss})";
-                _itemQuick2.Text = $"{_config.QuickStart2} Min (ersetzt {rem:mm\\:ss})";
+                _itemQuick1.Text = S.MenuQuickStartReplace(_config.QuickStart1, $"{rem:mm\\:ss}");
+                _itemQuick2.Text = S.MenuQuickStartReplace(_config.QuickStart2, $"{rem:mm\\:ss}");
             }
             else
             {
-                _itemQuick1.Text = $"{_config.QuickStart1} Minuten starten";
-                _itemQuick2.Text = $"{_config.QuickStart2} Minuten starten";
+                _itemQuick1.Text = S.MenuQuickStart(_config.QuickStart1);
+                _itemQuick2.Text = S.MenuQuickStart(_config.QuickStart2);
             }
         }
 

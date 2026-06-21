@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <data name="MenuCustomTime"    xml:space="preserve"><value>Eigene Zeit...</value></data>
+  <data name="MenuPause"         xml:space="preserve"><value>Pause</value></data>
+  <data name="MenuResume"        xml:space="preserve"><value>Fortsetzen</value></data>
+  <data name="MenuStop"          xml:space="preserve"><value>Stopp</value></data>
+  <data name="MenuSettings"      xml:space="preserve"><value>Einstellungen...</value></data>
+  <data name="MenuExit"          xml:space="preserve"><value>Beenden</value></data>
+  <data name="MenuQuickStart"    xml:space="preserve"><value>{0} Minuten starten</value></data>
+  <data name="MenuQuickStartReplace" xml:space="preserve"><value>{0} Min (ersetzt {1})</value></data>
+
+  <data name="TrayRunning"       xml:space="preserve"><value>TimeboxBar — {0} verbleibend</value></data>
+  <data name="TrayPaused"        xml:space="preserve"><value>TimeboxBar — Pausiert ({0})</value></data>
+
+  <data name="AlreadyRunning"    xml:space="preserve"><value>Läuft bereits im Tray.</value></data>
+  <data name="TimerCompleted"    xml:space="preserve"><value>Zeit abgelaufen!</value></data>
+  <data name="HotkeyConflict"    xml:space="preserve"><value>Hotkey konnte nicht registriert werden — bitte anderen in Einstellungen wählen.</value></data>
+  <data name="HotkeyConflictShort" xml:space="preserve"><value>Hotkey konnte nicht registriert werden.</value></data>
+
+  <data name="TimerRunningRestart" xml:space="preserve"><value>Timer läuft noch ({0}). Neu starten mit {1} Minuten?</value></data>
+  <data name="ExitConfirm"       xml:space="preserve"><value>Timer läuft noch ({0} verbleibend). Wirklich beenden?</value></data>
+
+  <data name="SettingsTitle"     xml:space="preserve"><value>TimeboxBar — Einstellungen</value></data>
+  <data name="LabelBarHeight"    xml:space="preserve"><value>Balkenhöhe (px):</value></data>
+  <data name="LabelPosition"     xml:space="preserve"><value>Position:</value></data>
+  <data name="LabelOpacity"      xml:space="preserve"><value>Transparenz:</value></data>
+  <data name="LabelQuickStart1"  xml:space="preserve"><value>Schnellstart 1 (Min):</value></data>
+  <data name="LabelQuickStart2"  xml:space="preserve"><value>Schnellstart 2 (Min):</value></data>
+  <data name="LabelHotkey"       xml:space="preserve"><value>Pause-Hotkey:</value></data>
+  <data name="LabelSound"        xml:space="preserve"><value>Sound bei Ablauf</value></data>
+  <data name="HotkeyPrompt"      xml:space="preserve"><value>(Taste drücken...)</value></data>
+  <data name="PositionTop"       xml:space="preserve"><value>Oben</value></data>
+  <data name="PositionBottom"    xml:space="preserve"><value>Unten</value></data>
+
+  <data name="CustomTimeTitle"   xml:space="preserve"><value>Timebox-Dauer</value></data>
+  <data name="LabelMinutes"      xml:space="preserve"><value>Minuten:</value></data>
+  <data name="ButtonStart"       xml:space="preserve"><value>Starten</value></data>
+</root>
