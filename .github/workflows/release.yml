@@ -1,0 +1,79 @@
+name: Build & Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Restore NuGet packages
+        run: nuget restore TimeboxBar/TimeboxBar.csproj
+        shell: pwsh
+
+      - name: Build Release
+        run: |
+          msbuild TimeboxBar/TimeboxBar.csproj `
+            /p:Configuration=Release `
+            /p:Platform=AnyCPU `
+            /t:Build
+        shell: pwsh
+
+      - name: Run Tests
+        run: |
+          nuget install NUnit.ConsoleRunner -Version 3.16.3 -OutputDirectory packages
+          msbuild TimeboxBar.Tests/TimeboxBar.Tests.csproj /p:Configuration=Release
+          .\packages\NUnit.ConsoleRunner.3.16.3\tools\nunit3-console.exe `
+            TimeboxBar.Tests\bin\Release\TimeboxBar.Tests.dll --noresult
+        shell: pwsh
+
+      - name: Create ZIP
+        run: |
+          $version = "${{ github.ref_name }}"
+          Compress-Archive `
+            -Path TimeboxBar\bin\Release\TimeboxBar.exe `
+            -DestinationPath "TimeboxBar-$version.zip"
+        shell: pwsh
+
+      - name: Install Inno Setup
+        run: choco install innosetup --no-progress -y
+        shell: pwsh
+
+      - name: Build Installer (Inno Setup)
+        run: |
+          $version = "${{ github.ref_name }}".TrimStart('v')
+          $iscc = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+          & $iscc /DMyAppVersion=$version installer\TimeboxBar.iss
+        shell: pwsh
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: |
+            TimeboxBar-${{ github.ref_name }}.zip
+            installer/Output/TimeboxBar-*-Setup.exe
+          body: |
+            ## Installation
+
+            **Installer (empfohlen):** `TimeboxBar-*-Setup.exe` herunterladen und ausführen.
+
+            **Portable:** `TimeboxBar-*.zip` entpacken und `TimeboxBar.exe` starten.
+
+            > **Windows SmartScreen:** Da die App nicht signiert ist, zeigt Windows beim ersten Start eine Warnung.
+            > → "Weitere Informationen" klicken → "Trotzdem ausführen"
+
+            ## Anforderungen
+            - Windows 10 / 11
+            - .NET Framework 4.8 (ist auf Windows 10/11 vorinstalliert)
