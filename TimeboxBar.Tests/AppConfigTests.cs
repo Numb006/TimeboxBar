@@ -40,11 +40,11 @@ namespace TimeboxBar.Tests
             Assert.That(c.IsBottom, Is.True);
         }
 
-        [TestCase(3,  3)]
-        [TestCase(6,  6)]
-        [TestCase(10, 10)]
-        [TestCase(0,  3)]   // unter Minimum → Minimum
-        [TestCase(99, 10)]  // über Maximum → Maximum
+        [TestCase(3,   3)]
+        [TestCase(6,   6)]
+        [TestCase(100, 100)]
+        [TestCase(0,   3)]    // unter Minimum → Minimum
+        [TestCase(150, 100)]  // über Maximum → Maximum
         public void ClampedBarHeight_ClampsCorrectly(int input, int expected)
         {
             var c = new AppConfig { BarHeight = input };
@@ -171,7 +171,7 @@ namespace TimeboxBar.Tests
         public void Constants_HaveExpectedValues()
         {
             Assert.That(AppConfig.MinBarHeight, Is.EqualTo(3));
-            Assert.That(AppConfig.MaxBarHeight, Is.EqualTo(10));
+            Assert.That(AppConfig.MaxBarHeight, Is.EqualTo(100));
         }
     }
 }
