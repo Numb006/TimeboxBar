@@ -8,6 +8,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: release
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: windows-latest
@@ -56,7 +60,7 @@ jobs:
         run: |
           $version = "${{ github.ref_name }}".TrimStart('v')
           $iscc = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
-          & $iscc /DMyAppVersion=$version installer\TimeboxBar.iss
+          & $iscc "/DMyAppVersion=$version" installer\TimeboxBar.iss
         shell: pwsh
 
       - name: Create GitHub Release
@@ -69,13 +73,13 @@ jobs:
           body: |
             ## Installation
 
-            **Installer (empfohlen):** `TimeboxBar-*-Setup.exe` herunterladen und ausführen.
+            **Installer (recommended):** Download `TimeboxBar-*-Setup.exe` and run it.
 
-            **Portable:** `TimeboxBar-*.zip` entpacken und `TimeboxBar.exe` starten.
+            **Portable:** Extract `TimeboxBar-*.zip` and start `TimeboxBar.exe`.
 
-            > **Windows SmartScreen:** Da die App nicht signiert ist, zeigt Windows beim ersten Start eine Warnung.
-            > → "Weitere Informationen" klicken → "Trotzdem ausführen"
+            > **Windows SmartScreen:** Because the app is not code-signed, Windows may show a warning on first launch.
+            > → Click "More info" → "Run anyway"
 
-            ## Anforderungen
+            ## Requirements
             - Windows 10 / 11
-            - .NET Framework 4.8 (ist auf Windows 10/11 vorinstalliert)
+            - .NET Framework 4.8 (pre-installed on Windows 10/11)
