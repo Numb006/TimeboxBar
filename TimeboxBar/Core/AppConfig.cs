@@ -10,7 +10,7 @@ namespace TimeboxBar.Core
     public class AppConfig
     {
         public const int    MinBarHeight  = 3;
-        public const int    MaxBarHeight  = 10;
+        public const int    MaxBarHeight  = 100;
         public const double MinOpacity    = 0.1;
         public const double MaxOpacity    = 1.0;
 
