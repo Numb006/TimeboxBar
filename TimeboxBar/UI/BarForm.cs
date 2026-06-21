@@ -420,7 +420,7 @@ namespace TimeboxBar.UI
         {
             using (var popup = new QuickStartPopup(_config.QuickStart1, _config.QuickStart2))
             {
-                popup.ShowAtCursor();
+                popup.PositionAtCursor();
                 if (popup.ShowDialog(this) == DialogResult.OK)
                 {
                     if (popup.SelectedMinutes == -1)
